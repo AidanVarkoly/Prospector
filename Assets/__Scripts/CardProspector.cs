@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum eCardState
+public enum ECardState
 {
     drawpile,
     tableau,
@@ -14,8 +14,14 @@ public enum eCardState
 public class CardProspector : Card
 {
     [Header("Set Dynamically: Card Prospector")]
-    public eCardState state = eCardState.drawpile;
+    public ECardState state = ECardState.drawpile;
     public List<CardProspector> hiddenBy = new List<CardProspector>();
     public int layoutID;
     public SlotDef slotDef;
+
+    override public void OnMouseUpAsButton()
+    {
+        Prospector.S.CardClicked(this);
+        base.OnMouseUpAsButton();
+    }
 }

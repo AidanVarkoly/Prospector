@@ -19,7 +19,7 @@ public class Card : MonoBehaviour {
     
     void Start()
     {
-        SetSortingOrder(0);
+        SetSortOrder(0);
     }
 
     public void PopulateSpriteRenderers()
@@ -40,7 +40,7 @@ public class Card : MonoBehaviour {
         }
     }
 
-    public void SetSortingOrder(int sORD)
+    public void SetSortOrder(int sOrd)
     {
         PopulateSpriteRenderers();
 
@@ -48,19 +48,19 @@ public class Card : MonoBehaviour {
         {
             if (tSR.gameObject == this.gameObject)
             {
-                tSR.sortingOrder = sORD;
+                tSR.sortingOrder = sOrd;
                 continue;
 
             }
             switch (tSR.gameObject.name)
             {
                 case "back":
-                    tSR.sortingOrder = sORD + 2;
+                    tSR.sortingOrder = sOrd + 2;
                     break;
 
                 case "face":
                 default:
-                    tSR.sortingOrder = sORD + 1;
+                    tSR.sortingOrder = sOrd + 1;
                     break;
 
             }
@@ -76,6 +76,11 @@ public class Card : MonoBehaviour {
 			back.SetActive(!value);
 		}
 	}	
+
+    virtual public void OnMouseUpAsButton()
+    {
+        print(name);
+    }
 } // class Card
 
 [System.Serializable]
