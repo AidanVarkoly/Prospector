@@ -45,6 +45,7 @@ public class Prospector : MonoBehaviour
         ScoreBoard.S.score = ScoreManager.SCORE;
         deck = GetComponent<Deck>();
         deck.InitDeck(deckXML.text);
+        Deck.Shuffle(ref deck.cards);
 
         layout = GetComponent<Layout>();
         layout.ReadLayout(layoutXML.text);
@@ -94,7 +95,7 @@ public class Prospector : MonoBehaviour
                 -tSD.layerID);
             cp.layoutID = tSD.id;
             cp.slotDef = tSD;
-            cp.state = ECardState.tableau;
+            cp.state = eCardState.tableau;
             cp.SetSortingLayerName(tSD.layerName);
 
             tableau.Add(cp);
@@ -130,7 +131,7 @@ public class Prospector : MonoBehaviour
             bool faceUp = true;
             foreach (CardProspector cover in cd.hiddenBy)
             {
-                if (cover.state == ECardState.tableau)
+                if (cover.state == eCardState.tableau)
                 {
                     faceUp = false;
                 }
@@ -141,7 +142,7 @@ public class Prospector : MonoBehaviour
 
     void MoveToDiscard(CardProspector cd)
     {
-        cd.state = ECardState.discard;
+        cd.state = eCardState.discard;
         discardPile.Add(cd);
         cd.transform.parent = layoutAnchor;
 
@@ -158,7 +159,7 @@ public class Prospector : MonoBehaviour
     {
         if (target != null) MoveToDiscard(target);
         target = cd;
-        cd.state = ECardState.target;
+        cd.state = eCardState.target;
         cd.transform.parent = layoutAnchor;
         cd.transform.localPosition = new Vector3(
             layout.multiplier.x * layout.discardPile.x,
@@ -185,7 +186,7 @@ public class Prospector : MonoBehaviour
                 layout.multiplier.y * (layout.drawPile.y + i * dpStagger.y),
                 -layout.drawPile.layerID + 0.1f * i);
             cd.faceUp = false;
-            cd.state = ECardState.drawpile;
+            cd.state = eCardState.drawpile;
             cd.SetSortingLayerName(layout.drawPile.layerName);
             cd.SetSortOrder(-10 * i);
         }
@@ -195,10 +196,10 @@ public class Prospector : MonoBehaviour
     {
         switch (cd.state)
         {
-            case ECardState.target:
+            case eCardState.target:
                 break;
 
-            case ECardState.drawpile:
+            case eCardState.drawpile:
                 MoveToDiscard(target);
                 MoveToTarget(Draw());
                 UpdateDrawPile();
@@ -206,7 +207,7 @@ public class Prospector : MonoBehaviour
                 FloatingScoreHandler(eScoreEvent.draw);
                 break;
 
-            case ECardState.tableau:
+            case eCardState.tableau:
                 bool validMatch = true;
                 if (!cd.faceUp)
                 {
